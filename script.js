@@ -376,7 +376,7 @@ let guestbookPage = 1;
 function guestbookRequest(params) {
   return new Promise((resolve) => {
     const cb = "gb" + Date.now() + Math.floor(Math.random() * 1000);
-    const timer = setTimeout(() => resolve({ ok: false, timeout: true }), 4000);
+    const timer = setTimeout(() => resolve({ ok: false, timeout: true }), 15000);
     window[cb] = (data) => {
       clearTimeout(timer);
       delete window[cb];
