@@ -307,6 +307,8 @@ if (shareButton) {
 
 const musicButton = document.getElementById("musicButton");
 const bgMusic = document.getElementById("bgMusic");
+let musicStarted = false;
+let userMuted = false;
 
 if (musicButton && bgMusic) {
   bgMusic.volume = 0.8;
@@ -317,15 +319,45 @@ if (musicButton && bgMusic) {
     musicButton.setAttribute("aria-label", playing ? "배경음악 끄기" : "배경음악 켜기");
   }
 
-  musicButton.addEventListener("click", () => {
+  function startMusic() {
+    if (userMuted || musicStarted) return;
+    const pending = bgMusic.play();
+    if (pending && pending.then) {
+      pending.then(() => {
+        musicStarted = true;
+        setMusicUi(true);
+      }).catch(() => {});
+    }
+  }
+
+  function unlockMusic() {
+    startMusic();
+    if (musicStarted) {
+      document.removeEventListener("pointerdown", unlockMusic);
+      document.removeEventListener("touchstart", unlockMusic);
+      document.removeEventListener("click", unlockMusic);
+    }
+  }
+
+  document.addEventListener("pointerdown", unlockMusic);
+  document.addEventListener("touchstart", unlockMusic);
+  document.addEventListener("click", unlockMusic);
+
+  musicButton.addEventListener("click", (event) => {
+    event.stopPropagation();
     if (bgMusic.paused) {
+      userMuted = false;
       const pending = bgMusic.play();
-      if (pending && pending.catch) {
-        pending.then(() => setMusicUi(true)).catch(() => {
+      if (pending && pending.then) {
+        pending.then(() => {
+          musicStarted = true;
+          setMusicUi(true);
+        }).catch(() => {
           showToast("음악 파일을 확인해주세요.");
         });
       }
     } else {
+      userMuted = true;
       bgMusic.pause();
       setMusicUi(false);
     }
@@ -355,17 +387,8 @@ document.getElementById("navTmap")?.addEventListener("click", () => {
 });
 
 document.getElementById("navFast")?.addEventListener("click", () => {
-  const destination = VENUE.lat + "," + VENUE.lng;
-  const openRoute = (origin) => {
-    window.location.href = "https://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving" + (origin ? "&origin=" + origin : "");
-  };
-  if (!navigator.geolocation) {
-    openRoute("");
-    return;
-  }
-  navigator.geolocation.getCurrentPosition((pos) => {
-    openRoute(pos.coords.latitude + "," + pos.coords.longitude);
-  }, () => openRoute(""));
+  const goal = encodeURIComponent(VENUE.lng + "," + VENUE.lat + ",라온제나 플로렌스홀");
+  openMap("https://map.naver.com/p/directions/-/" + goal + "/walk");
 });
 
 const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbyBC9yf2r4DNBediO4dHwzr_IODDZTD7RpRCRT566qOCF16BdKBaUD5zU3ZuKSo5eUsDA/exec";
