@@ -407,7 +407,7 @@ let guestbookPage = 1;
 function guestbookRequest(params) {
   return new Promise((resolve) => {
     const cb = "gb" + Date.now() + Math.floor(Math.random() * 1000);
-    const timer = setTimeout(() => resolve({ ok: false, timeout: true }), 15000);
+    const timer = setTimeout(() => resolve({ ok: false, timeout: true }), 30000);
     window[cb] = (data) => {
       clearTimeout(timer);
       delete window[cb];
@@ -452,7 +452,10 @@ function renderGuestbook() {
 }
 
 async function loadGuestbook() {
-  const data = await guestbookRequest({ action: "list" });
+  let data = await guestbookRequest({ action: "list" });
+  if (!(data.ok && Array.isArray(data.items))) {
+    data = await guestbookRequest({ action: "list" });
+  }
   if (data.ok && Array.isArray(data.items)) {
     guestbookItems = data.items;
     renderGuestbook();
