@@ -452,13 +452,19 @@ function renderGuestbook() {
 }
 
 async function loadGuestbook() {
+  const note = document.getElementById("guestbookNote");
+  if (note) note.textContent = "방명록 불러오는 중...";
   let data = await guestbookRequest({ action: "list" });
   if (!(data.ok && Array.isArray(data.items))) {
+    if (note) note.textContent = "다시 불러오는 중...";
     data = await guestbookRequest({ action: "list" });
   }
   if (data.ok && Array.isArray(data.items)) {
     guestbookItems = data.items;
     renderGuestbook();
+    if (note) note.textContent = guestbookItems.length ? "" : "아직 남겨진 글이 없습니다.";
+  } else if (note) {
+    note.textContent = "방명록을 불러오지 못했습니다. 새로고침해 주세요.";
   }
 }
 
