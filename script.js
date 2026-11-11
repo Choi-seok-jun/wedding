@@ -387,7 +387,7 @@ document.getElementById("navTmap")?.addEventListener("click", () => {
 });
 
 document.getElementById("navFast")?.addEventListener("click", () => {
-  const goal = encodeURIComponent(VENUE.lng + "," + VENUE.lat + ",라온제나 플로렌스홀");
+  const goal = encodeURIComponent("서울 강남구 학동로47길 5 라온제나");
   openMap("https://map.naver.com/p/directions/-/" + goal + "/walk");
 });
 
