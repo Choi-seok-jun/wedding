@@ -387,8 +387,16 @@ document.getElementById("navTmap")?.addEventListener("click", () => {
 });
 
 document.getElementById("navFast")?.addEventListener("click", () => {
-  const goal = encodeURIComponent("서울 강남구 학동로47길 5 라온제나");
-  openMap("https://map.naver.com/p/directions/-/" + goal + "/walk");
+  const appUrl =
+    "nmap://route/walk?dlat=" + VENUE.lat +
+    "&dlng=" + VENUE.lng +
+    "&dname=" + encodeURIComponent("라온제나 플로렌스홀") +
+    "&appname=wedding";
+  const webUrl = "https://map.naver.com/p/search/" + encodeURIComponent("라온제나 플로렌스홀");
+  window.location.href = appUrl;
+  setTimeout(() => {
+    window.location.href = webUrl;
+  }, 900);
 });
 
 const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbyBC9yf2r4DNBediO4dHwzr_IODDZTD7RpRCRT566qOCF16BdKBaUD5zU3ZuKSo5eUsDA/exec";
