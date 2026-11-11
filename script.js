@@ -399,7 +399,7 @@ document.getElementById("navFast")?.addEventListener("click", () => {
   }, 900);
 });
 
-const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbxDw5hqhfnsO0ib1etARUKCJDnV7Pe7qccQ2iKUTjLDvBiqfFYTS8IFIY6V-YaSgNSBLA/exec";
+const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbwwQZtqJDobMto5y82B5-u5WjyTNcv7tgHUvE_NlBvM34mrNI2EEPIoiYSO_7eBYpf2/exec";
 const PAGE_SIZE = 5;
 let guestbookItems = [];
 let guestbookPage = 1;
