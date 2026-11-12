@@ -399,7 +399,7 @@ document.getElementById("navFast")?.addEventListener("click", () => {
   }, 900);
 });
 
-const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbwwQZtqJDobMto5y82B5-u5WjyTNcv7tgHUvE_NlBvM34mrNI2EEPIoiYSO_7eBYpf2/exec";
+const GUESTBOOK_API = "https://script.google.com/macros/s/AKfycbzbo6J1a870U-AVEPUvU9ebSpYpLu1elkbRYd5a4lZA5T6oxuT0BsHGhTL3SL1pedjxkA/exec";
 const PAGE_SIZE = 5;
 let guestbookItems = [];
 let guestbookPage = 1;
@@ -506,7 +506,12 @@ if (guestbookForm) {
     guestbookItems = guestbookItems.filter((item) => String(item.id) !== String(id));
     renderGuestbook();
     if (note) note.textContent = "삭제했습니다. 다시 남겨 주세요.";
-    const data = await guestbookRequest({ action: "delete", id: id, password: password });
+    const data = await guestbookRequest({
+      action: "delete",
+      id: id,
+      name: current ? current.name : "",
+      password: password
+    });
     if (data.ok === false && !data.timeout) {
       if (note) note.textContent = "비밀번호가 다릅니다.";
       loadGuestbook();
